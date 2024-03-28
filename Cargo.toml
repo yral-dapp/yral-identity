@@ -1,0 +1,15 @@
+[package]
+name = "yral-identity"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+ic-validator-ingress-message = { git = "https://github.com/dfinity/ic.git", rev = "release-2024-03-20_23-01+hotfix" }
+ic-types = { git = "https://github.com/dfinity/ic.git", rev = "release-2024-03-20_23-01+hotfix" }
+ic-agent = "0.34.0"
+candid = "0.10.6"
+web-time = "1.1.0"
+thiserror = "1.0.58"
+serde = { version = "1.0.197", features = ["derive"] }
