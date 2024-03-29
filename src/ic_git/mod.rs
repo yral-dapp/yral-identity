@@ -13,7 +13,8 @@ use ic_validator_ingress_message::{
 use crate::{msg_builder::Message, Delegation, Error, Result, Signature, SignedDelegation};
 
 impl Signature {
-    fn create_request(self, message: Message) -> Result<HttpRequest<SignedIngressContent>> {
+    fn create_request(self, mut message: Message) -> Result<HttpRequest<SignedIngressContent>> {
+        message.ingress_expiry = self.ingress_expiry;
         let envelope = HttpRequestEnvelope {
             content: HttpCallContent::Call {
                 update: message.into(),

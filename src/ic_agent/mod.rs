@@ -4,20 +4,16 @@ use crate::{msg_builder::Message, Delegation, Error, Result, Signature, SignedDe
 
 pub fn sign_message(identity: &impl Identity, mut msg: Message) -> Result<Signature> {
     msg.sender = identity.sender().map_err(|_| Error::SenderNotFound)?;
+    let ingress_expiry = msg.ingress_expiry;
     let sig_agent = identity.sign(&msg.into()).map_err(Error::Signing)?;
-    Ok(sig_agent.into())
-}
-
-impl From<ic_agent::Signature> for Signature {
-    fn from(value: ic_agent::Signature) -> Self {
-        Self {
-            sig: value.signature,
-            public_key: value.public_key,
-            delegations: value
-                .delegations
-                .map(|v| v.into_iter().map(Into::into).collect()),
-        }
-    }
+    Ok(Signature {
+        sig: sig_agent.signature,
+        public_key: sig_agent.public_key,
+        ingress_expiry,
+        delegations: sig_agent
+            .delegations
+            .map(|v| v.into_iter().map(Into::into).collect()),
+    })
 }
 
 impl From<Delegation> for ic_agent::identity::Delegation {

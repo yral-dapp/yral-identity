@@ -22,6 +22,7 @@ fn current_epoch() -> Duration {
 pub struct Signature {
     sig: Option<Vec<u8>>,
     public_key: Option<Vec<u8>>,
+    ingress_expiry: Duration,
     delegations: Option<Vec<SignedDelegation>>,
 }
 
