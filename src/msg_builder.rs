@@ -1,3 +1,4 @@
+#[cfg(feature = "ic-agent")]
 use ic_agent::agent::EnvelopeContent;
 use ic_types::messages::HttpCanisterUpdate;
 use web_time::Duration;
@@ -56,6 +57,7 @@ impl Default for Message {
     }
 }
 
+#[cfg(feature = "ic-agent")]
 impl From<Message> for EnvelopeContent {
     fn from(value: Message) -> Self {
         let ingress_expiry_ns = value

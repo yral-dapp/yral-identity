@@ -8,13 +8,14 @@ edition = "2021"
 [dependencies]
 ic-validator-ingress-message = { git = "https://github.com/dfinity/ic.git", rev = "release-2024-03-20_23-01+hotfix" }
 ic-types = { git = "https://github.com/dfinity/ic.git", rev = "release-2024-03-20_23-01+hotfix" }
-ic-agent = { version = "0.34.0", default-features = false }
+ic-agent = { version = "0.34.0", default-features = false, optional = true }
 candid = "0.10.6"
 web-time = "1.1.0"
 thiserror = "1.0.58"
 serde = { version = "1.0.197", features = ["derive"] }
 
 [features]
-default = ["ic-agent/reqwest"]
+ic-agent = ["dep:ic-agent"]
+default = ["ic-agent", "ic-agent/reqwest"]
 wasm-bindgen = ["ic-agent/wasm-bindgen"]
 hyper = ["ic-agent/hyper"]
