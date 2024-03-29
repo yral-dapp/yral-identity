@@ -1,6 +1,12 @@
-use ic_agent::agent::EnvelopeContent;
+use ic_agent::{agent::EnvelopeContent, Identity};
 
-use crate::{msg_builder::Message, Delegation, Signature, SignedDelegation};
+use crate::{msg_builder::Message, Delegation, Error, Result, Signature, SignedDelegation};
+
+pub fn sign_message(identity: &impl Identity, mut msg: Message) -> Result<Signature> {
+    msg.sender = identity.sender().map_err(|_| Error::SenderNotFound)?;
+    let sig_agent = identity.sign(&msg.into()).map_err(Error::Signing)?;
+    Ok(sig_agent.into())
+}
 
 impl From<ic_agent::Signature> for Signature {
     fn from(value: ic_agent::Signature) -> Self {
