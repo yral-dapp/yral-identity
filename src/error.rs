@@ -16,6 +16,8 @@ pub enum Error {
     InvalidMessage(#[from] HttpRequestError),
     #[error("signature does not match identity")]
     IdentityMismatch,
+    #[error("sender not found in identity")]
+    SenderNotFound,
 }
 
 pub type Result<T, E = Error> = std::result::Result<T, E>;

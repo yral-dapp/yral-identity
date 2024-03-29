@@ -2,6 +2,8 @@ mod error;
 mod glue;
 pub mod msg_builder;
 
+use std::ops::{Deref, DerefMut};
+
 use candid::Principal;
 pub use error::*;
 
@@ -102,12 +104,27 @@ impl<I: Identity> From<I> for WrappedIdentity<I> {
 }
 
 impl<I: Identity> WrappedIdentity<I> {
-    pub fn sign_message(&self, msg: Message) -> Result<Signature> {
+    pub fn sign_message(&self, mut msg: Message) -> Result<Signature> {
+        msg.sender = self.inner.sender().map_err(|_| Error::SenderNotFound)?;
         let sig_agent = self.inner.sign(&msg.into()).map_err(Error::Signing)?;
         Ok(Signature {
             sig: sig_agent.signature,
             public_key: sig_agent.public_key,
             delegations: self.delegations.clone(),
         })
+    }
+}
+
+impl<I: Identity> Deref for WrappedIdentity<I> {
+    type Target = I;
+
+    fn deref(&self) -> &Self::Target {
+        &self.inner
+    }
+}
+
+impl<I: Identity> DerefMut for WrappedIdentity<I> {
+    fn deref_mut(&mut self) -> &mut Self::Target {
+        &mut self.inner
     }
 }

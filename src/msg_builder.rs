@@ -11,7 +11,7 @@ pub struct Message {
     canister_id: Principal,
     method_name: String,
     args: Vec<u8>,
-    sender: Principal,
+    pub(crate) sender: Principal,
     ingress_expiry: Duration,
     nonce: Option<Vec<u8>>,
 }
