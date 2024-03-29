@@ -24,6 +24,7 @@ pub struct Signature {
     public_key: Option<Vec<u8>>,
     ingress_expiry: Duration,
     delegations: Option<Vec<SignedDelegation>>,
+    sender: Principal,
 }
 
 #[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Clone)]
@@ -37,4 +38,31 @@ struct Delegation {
 struct SignedDelegation {
     pub delegation: Delegation,
     pub signature: Vec<u8>,
+}
+
+#[cfg(test)]
+mod test {
+    use ic_agent::identity::{Identity, Secp256k1Identity};
+
+    use crate::{ic_agent::sign_message, msg_builder::Message};
+    use rand::rngs::OsRng;
+
+    #[test]
+    fn test_signature_should_verify() {
+        let sk = k256::SecretKey::random(&mut OsRng);
+        let identity = Secp256k1Identity::from_private_key(sk);
+
+        let msg = Message::default()
+            .method_name("test".into())
+            .args(("test",))
+            .unwrap();
+        let sig = sign_message(&identity, msg).unwrap();
+
+        let msg2 = Message::default()
+            .method_name("test".into())
+            .args(("test",))
+            .unwrap();
+        sig.verify_identity(identity.sender().unwrap(), msg2)
+            .unwrap();
+    }
 }

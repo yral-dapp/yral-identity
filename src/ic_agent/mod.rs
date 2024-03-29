@@ -3,13 +3,15 @@ use ic_agent::{agent::EnvelopeContent, Identity};
 use crate::{msg_builder::Message, Delegation, Error, Result, Signature, SignedDelegation};
 
 pub fn sign_message(identity: &impl Identity, mut msg: Message) -> Result<Signature> {
-    msg.sender = identity.sender().map_err(|_| Error::SenderNotFound)?;
+    let sender = identity.sender().map_err(|_| Error::SenderNotFound)?;
+    msg.sender = sender;
     let ingress_expiry = msg.ingress_expiry;
     let sig_agent = identity.sign(&msg.into()).map_err(Error::Signing)?;
     Ok(Signature {
         sig: sig_agent.signature,
-        public_key: sig_agent.public_key,
+        public_key: identity.public_key(),
         ingress_expiry,
+        sender,
         delegations: sig_agent
             .delegations
             .map(|v| v.into_iter().map(Into::into).collect()),

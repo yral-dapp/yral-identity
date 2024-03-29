@@ -38,7 +38,8 @@ impl Signature {
         Self::verify_request(req)
     }
 
-    pub fn verify_identity(self, principal: Principal, msg: Message) -> Result<()> {
+    pub fn verify_identity(self, principal: Principal, mut msg: Message) -> Result<()> {
+        msg.sender = self.sender;
         let req = self.create_request(msg)?;
         if req.sender().get().0 != principal {
             return Err(Error::IdentityMismatch);
