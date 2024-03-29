@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ic-validator-ingress-message = { git = "https://github.com/dfinity/ic.git", rev = "release-2024-03-20_23-01+hotfix" }
-ic-types = { git = "https://github.com/dfinity/ic.git", rev = "release-2024-03-20_23-01+hotfix" }
+ic-validator-ingress-message = { git = "https://github.com/dfinity/ic.git", rev = "release-2024-03-20_23-01+hotfix", optional = true }
+ic-types = { git = "https://github.com/dfinity/ic.git", rev = "release-2024-03-20_23-01+hotfix", optional = true }
 ic-agent = { version = "0.34.0", default-features = false, optional = true }
 candid = "0.10.6"
 web-time = "1.1.0"
@@ -15,7 +15,7 @@ thiserror = "1.0.58"
 serde = { version = "1.0.197", features = ["derive"] }
 
 [features]
+default = ["ic-agent", "ic-git"]
 ic-agent = ["dep:ic-agent"]
-default = ["ic-agent", "ic-agent/reqwest"]
+ic-git = ["ic-validator-ingress-message", "ic-types"]
 wasm-bindgen = ["ic-agent/wasm-bindgen"]
-hyper = ["ic-agent/hyper"]

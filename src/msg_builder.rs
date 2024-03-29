@@ -1,6 +1,3 @@
-#[cfg(feature = "ic-agent")]
-use ic_agent::agent::EnvelopeContent;
-use ic_types::messages::HttpCanisterUpdate;
 use web_time::Duration;
 
 use candid::{encode_args, utils::ArgumentEncoder, Principal};
@@ -9,12 +6,13 @@ use crate::{current_epoch, Result};
 
 #[derive(Clone, Debug)]
 pub struct Message {
-    canister_id: Principal,
-    method_name: String,
-    args: Vec<u8>,
+    pub(crate) canister_id: Principal,
+    pub(crate) method_name: String,
+    pub(crate) args: Vec<u8>,
+    #[allow(dead_code)]
     pub(crate) sender: Principal,
-    ingress_expiry: Duration,
-    nonce: Option<Vec<u8>>,
+    pub(crate) ingress_expiry: Duration,
+    pub(crate) nonce: Option<Vec<u8>>,
 }
 
 impl Message {
@@ -53,43 +51,6 @@ impl Default for Message {
             nonce: None,
             sender: Principal::anonymous(),
             ingress_expiry: current_epoch() + Duration::from_secs(120),
-        }
-    }
-}
-
-#[cfg(feature = "ic-agent")]
-impl From<Message> for EnvelopeContent {
-    fn from(value: Message) -> Self {
-        let ingress_expiry_ns = value
-            .ingress_expiry
-            .as_nanos()
-            .try_into()
-            .expect("Ingress expiry overflow");
-        EnvelopeContent::Call {
-            canister_id: value.canister_id,
-            method_name: value.method_name,
-            arg: value.args,
-            sender: value.sender,
-            nonce: value.nonce,
-            ingress_expiry: ingress_expiry_ns,
-        }
-    }
-}
-
-impl From<Message> for HttpCanisterUpdate {
-    fn from(value: Message) -> Self {
-        let ingress_expiry_ns = value
-            .ingress_expiry
-            .as_nanos()
-            .try_into()
-            .expect("Ingress expiry overflow");
-        Self {
-            canister_id: value.canister_id.into(),
-            method_name: value.method_name,
-            arg: value.args.into(),
-            sender: value.sender.into(),
-            ingress_expiry: ingress_expiry_ns,
-            nonce: value.nonce.map(|n| n.into()),
         }
     }
 }

@@ -1,5 +1,3 @@
-use ic_types::messages::HttpRequestError;
-use ic_validator_ingress_message::RequestValidationError;
 use thiserror::Error;
 
 #[derive(Error, Debug)]
@@ -11,9 +9,9 @@ pub enum Error {
     #[error("signing failed {0}")]
     Signing(String),
     #[error("signature verification failed {0}")]
-    SignatureVerification(RequestValidationError),
+    SignatureVerification(String),
     #[error("invalid message {0}")]
-    InvalidMessage(#[from] HttpRequestError),
+    InvalidMessage(String),
     #[error("signature does not match identity")]
     IdentityMismatch,
     #[error("sender not found in identity")]
