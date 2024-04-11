@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ic-validator-ingress-message = { git = "https://github.com/go-bazzinga/ic.git", rev = "efca3740d1269e5d840aecadc88a98ef1e860612", optional = true }
-ic-types = { git = "https://github.com/go-bazzinga/ic.git", rev = "efca3740d1269e5d840aecadc88a98ef1e860612", optional = true }
+ic-validator-ingress-message = { git = "https://github.com/dfinity/ic.git", rev = "2257f803fb4b49505b31828dd9c6ae587c07069c", optional = true }
+ic-types = { git = "https://github.com/dfinity/ic.git", rev = "2257f803fb4b49505b31828dd9c6ae587c07069c", optional = true }
 ic-agent = { version = "0.34.0", default-features = false, optional = true }
 candid = "0.10.6"
 web-time = "1.1.0"

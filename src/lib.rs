@@ -18,7 +18,7 @@ fn current_epoch() -> Duration {
 }
 
 /// A signature, interoperable with ic-agent & yral-identity
-#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Clone, Debug)]
 pub struct Signature {
     sig: Option<Vec<u8>>,
     public_key: Option<Vec<u8>>,
@@ -27,14 +27,14 @@ pub struct Signature {
     sender: Principal,
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Clone, Debug)]
 struct Delegation {
     pub pubkey: Vec<u8>,
     pub expiration_ns: u64,
     pub targets: Option<Vec<Principal>>,
 }
 
-#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Clone)]
+#[derive(Serialize, Deserialize, PartialEq, Eq, Hash, Clone, Debug)]
 struct SignedDelegation {
     pub delegation: Delegation,
     pub signature: Vec<u8>,
