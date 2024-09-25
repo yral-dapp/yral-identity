@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 ic-validator-ingress-message = { git = "https://github.com/dfinity/ic.git", rev = "2257f803fb4b49505b31828dd9c6ae587c07069c", optional = true }
 ic-types = { git = "https://github.com/dfinity/ic.git", rev = "2257f803fb4b49505b31828dd9c6ae587c07069c", optional = true }
-ic-agent = { version = "0.36.0", default-features = false, optional = true }
+ic-agent = { version = "0.38.1", default-features = false, optional = true }
 candid = "0.10.6"
 web-time = "1.1.0"
 thiserror = "1.0.58"
