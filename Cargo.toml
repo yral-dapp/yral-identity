@@ -6,8 +6,8 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-ic-validator-ingress-message = { git = "https://github.com/dfinity/ic.git", rev = "2257f803fb4b49505b31828dd9c6ae587c07069c", optional = true }
-ic-types = { git = "https://github.com/dfinity/ic.git", rev = "2257f803fb4b49505b31828dd9c6ae587c07069c", optional = true }
+ic-validator-ingress-message = { git = "https://github.com/dfinity/ic.git", default-features = false, rev = "b2a4053f1dca2455511f2c6c0dc12cb65f93b4b1", optional = true }
+ic-types = { git = "https://github.com/dfinity/ic.git", rev = "b2a4053f1dca2455511f2c6c0dc12cb65f93b4b1", optional = true }
 ic-agent = { version = "0.38.1", default-features = false, optional = true }
 candid = "0.10.6"
 web-time = "1.1.0"
@@ -23,4 +23,4 @@ rand = "0.8.5"
 default = ["ic-agent", "ic-git"]
 ic-agent = ["dep:ic-agent"]
 ic-git = ["ic-validator-ingress-message", "ic-types"]
-wasm-bindgen = ["ic-agent/wasm-bindgen", "getrandom/js"]
+wasm-bindgen = ["ic-agent/wasm-bindgen", "getrandom/js", "ic-validator-ingress-message/js"]
